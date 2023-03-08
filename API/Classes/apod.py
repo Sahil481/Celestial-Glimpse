@@ -3,7 +3,8 @@ import json
 from datetime import datetime
 import os
 
-api_key = os.environ["APIKEY"]
+api_key = os.getenv("APIKEY")
+
 
 class APOD:
     def __init__(self):

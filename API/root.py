@@ -5,8 +5,8 @@ import Classes.send_email as send_email
 import os
 
 app = FastAPI()
-my_password = os.environ["PASSWORD"]
-my_email = os.environ["EMAIL"]
+my_password = os.getenv("PASSWORD")
+my_email = os.getenv("EMAIL")
 
 @app.get("/")
 async def root():

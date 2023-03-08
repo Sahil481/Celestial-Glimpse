@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 import datetime
 import os
 
-uri = os.environ["MONGOURI"]
+uri = os.getenv("MONGOURI")
 
 
 class USER:

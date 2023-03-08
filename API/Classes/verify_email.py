@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from bson import ObjectId
 import os
 
-uri = os.environ["MONGOURI"]
+uri = os.getenv("MONGOURI")
 
 
 class VERIFY_USER:
