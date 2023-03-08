@@ -42,7 +42,10 @@ async def validate_delete_email(user_id: str):
 
 @app.get("/create_user/{email}")
 async def _user(email: str):
-    user = user_class.USER()
+    try:
+        user = user_class.USER()
+    except Exception as e:
+        print(e)
     user_found = user.get_users(email=email)
     if user_found is not None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You're already signed up")
