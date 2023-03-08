@@ -44,18 +44,19 @@ async def validate_delete_email(user_id: str):
 async def _user(email: str):
     try:
         user = user_class.USER()
+        user_found = user.get_users(email=email)
+        if user_found is not None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You're already signed up")
+        users = verify.VERIFY_USER()
+        user_verify = users.create_user(email)
+        if user_verify is None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please wait 10 minutes before trying again")
+        url = f"http://127.0.0.1:8000/validate_users/{user_verify}"
+        sending = send_email.EmailSender(my_email, my_password)
+        sending.send_verification_create_email(to_email=email, subject="Verify your email account", url=url)
     except Exception as e:
         print(e)
-    user_found = user.get_users(email=email)
-    if user_found is not None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You're already signed up")
-    users = verify.VERIFY_USER()
-    user_verify = users.create_user(email)
-    if user_verify is None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please wait 10 minutes before trying again")
-    url = f"http://127.0.0.1:8000/validate_users/{user_verify}"
-    sending = send_email.EmailSender(my_email, my_password)
-    sending.send_verification_create_email(to_email=email, subject="Verify your email account", url=url)
+        return {"detail" : "unsuccessful"}
     return {"detail": "Success"}
 
 
